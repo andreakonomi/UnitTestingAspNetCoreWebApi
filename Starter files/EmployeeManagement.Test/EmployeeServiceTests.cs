@@ -9,7 +9,8 @@ namespace EmployeeManagement.Test;
 
 // XUnit supplies on the constructor of the first test a new instance of the fixture provided by the interface
 // and every other test gets the same instance. After the last test the fixture is disposed.
-public class EmployeeServiceTests : IClassFixture<EmployeeServiceFixture>
+[Collection("EmployeeServiceCollection")]   // this groups the test class to the collection and it will use the collection fixture that has the same name on the CollectionDefinition
+public class EmployeeServiceTests // : IClassFixture<EmployeeServiceFixture>
 {
     private readonly EmployeeServiceFixture _employeeServiceFixture;
     
