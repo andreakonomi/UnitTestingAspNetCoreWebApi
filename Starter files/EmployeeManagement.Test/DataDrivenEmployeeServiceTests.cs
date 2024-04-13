@@ -1,5 +1,6 @@
 using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Test.Fixtures;
+using EmployeeManagement.Test.TestData;
 
 namespace EmployeeManagement.Test;
 
@@ -47,15 +48,28 @@ public class DataDrivenEmployeeServiceTests //: IClassFixture<EmployeeServiceFix
         };
         return testData.Take(testDataInstancesToProvide);
     }
+    
+    public static TheoryData<int, bool> StronglyTypedExampleTestDataForGiveRaise_WithMethod()
+    {
+        return new TheoryData<int, bool>()
+        { 
+            { 100, true }, 
+            { 200, false }
+        };
+    }
      
     
     [Theory]
     //[MemberData(nameof(ExampleTestDataForGiveRaise_WithProperty))]
     //[MemberData(nameof(ExampleTestDataForGiveRaise_WithMethod), 1)]
-    [MemberData(
-        nameof(DataDrivenEmployeeServiceTests.ExampleTestDataForGiveRaise_WithMethod),  //this form allows you to share test data with other classes
-        1,
-        MemberType = typeof(DataDrivenEmployeeServiceTests))]
+    // [MemberData(
+    //     nameof(DataDrivenEmployeeServiceTests.ExampleTestDataForGiveRaise_WithMethod),  //this form allows you to share test data with other classes
+    //     1,
+    //     MemberType = typeof(DataDrivenEmployeeServiceTests))]
+    //[ClassData(typeof(EmployeeServiceTestData))]  //this uses the untyped object[] version of class data
+    //[ClassData(typeof(StronglyTypedEmployeeServiceTestData))]   //this works with strongly typed parameters on that other class
+    //[MemberData(nameof(StronglyTypedExampleTestDataForGiveRaise_WithMethod))]   // strongly typed member data
+    [ClassData(typeof(StronglyTypedEmployeeServiceTestData_FromFile))]
     public async Task GiveRaise_MinimumRaiseGiven_EmployeeMinimumRaiseGivenMatchesValue(
         int raiseGiven, bool expectedValueForMinimumRaiseGiven)
     {
