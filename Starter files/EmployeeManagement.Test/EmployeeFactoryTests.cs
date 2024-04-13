@@ -1,14 +1,17 @@
 using EmployeeManagement.Business;
 using EmployeeManagement.DataAccess.Entities;
+using Xunit.Abstractions;
 
 namespace EmployeeManagement.Test;
 
 public class EmployeeFactoryTests : IDisposable
 {
     private EmployeeFactory _employeeFactory;
+    private readonly ITestOutputHelper _testOutputHelper;
 
-    public EmployeeFactoryTests()
+    public EmployeeFactoryTests(ITestOutputHelper testOutputHelper)
     {
+        _testOutputHelper = testOutputHelper;
         // Creating shared context for each test (aka system under test)
         _employeeFactory = new EmployeeFactory();
     }
@@ -22,16 +25,20 @@ public class EmployeeFactoryTests : IDisposable
     /// Assert the business behaviour that new internal employyes have salary 2500
     /// </summary>
     [Fact]      //Name of unit _ Scenario _ Expected Result
+    [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]    // used to group tests for execution together
     public void CreateEmployee_ConstructInternalEmployee_SalaryMustBe2500()
     {
         var employee = (InternalEmployee)_employeeFactory.CreateEmployee("John", "Doe");
+        
+        _testOutputHelper.WriteLine("Using this you can write messages to console during execution");
         
         Assert.Equal(2500, employee.Salary);
         // You can also assert for floating values the no of precision to check to
         //Assert.Equal(2500, employee.Salary, 3);   //check until 3 precision digits
     }
     
-    [Fact]
+    [Fact(Skip = "Skipping for demo purposes")] // this is how to skip tests
+    [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
     public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500and3500()
     {
         var employee = (InternalEmployee)_employeeFactory.CreateEmployee("John", "Doe");
@@ -42,6 +49,7 @@ public class EmployeeFactoryTests : IDisposable
     }
 
     [Fact]
+    [Trait("Category", "EmployeeFactory_CreateEmployee_ReturnType")]
     public void CreateEmployee_IsExternalIsTrue_ReturnTypeMustBeExternalEmployee()
     {
         // Act

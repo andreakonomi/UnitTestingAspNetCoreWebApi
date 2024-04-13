@@ -10,3 +10,7 @@ A slightly less bad approach is to use [InternalsVisible] so that is visible by 
 - Class Fixture, create test context once for class and share across all tests
   - Be aware the dependencies should be stateless and not be affected from test to test
 - Collection Fixture have one test context across all test classes
+
+**Usually you shouldn't need to integrate with the DI container of the app to provide the dependencies that test classes need.
+It is preferred to instantiate them on every class to keep it fast and concise.
+However, if needed because a class has a large tree of dependencies you can integrate with the container.
