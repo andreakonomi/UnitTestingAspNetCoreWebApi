@@ -1,6 +1,9 @@
 using EmployeeManagement.Business;
 using EmployeeManagement.DataAccess.DbContexts;
+using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.DataAccess.Services;
+using EmployeeManagement.Services.Test;
+using EmployeeManagement.Test.HttpMessageHandlers;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Sdk;
@@ -9,6 +12,24 @@ namespace EmployeeManagement.Test;
 
 public class TestIsolationApproachesTests
 {
+    //BR: When we promote an employee, if he is elidgible, it is done and his job level is increased by one
+    [Fact]
+    public async Task PromoteInternalEmployeeAsync_IsEligible_JobLevelMustBeIncreased()
+    {
+        // Arrange
+        var httpClient = new HttpClient(new TestablePromotionEligibilityHandler(true));
+        var internalEmployee = new InternalEmployee(
+            "John", "Doe", 3, 3000, false, 1);
+
+        var promotionService = new PromotionService(httpClient, new EmployeeManagementTestDataRepository());
+
+        // Act
+        await promotionService.PromoteInternalEmployeeAsync(internalEmployee);
+
+        // Assert
+        Assert.Equal(2, internalEmployee.JobLevel);
+    }
+    
     // BL: Employees can attend courses, the more courses they atend their potential bonus is increased
     [Fact]
     public async Task AttendCourseAsync_CourseAttended_SuggestedBonusMustBeSuccessfullyRecalculated()
