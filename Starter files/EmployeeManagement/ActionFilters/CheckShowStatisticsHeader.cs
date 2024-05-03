@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace EmployeeManagement.ActionFilters
 {
     public class CheckShowStatisticsHeader : ActionFilterAttribute
-    { 
+    {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             // if the ShowStatistics header is missing or set to false, 
