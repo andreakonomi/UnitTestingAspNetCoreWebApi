@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeManagement.Business;
 using EmployeeManagement.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -81,5 +80,6 @@ namespace EmployeeManagement.Controllers
                 _mapper.Map<InternalEmployeeDto>(internalEmployee),
                 new { employeeId = internalEmployee.Id } );
         }
+        
     }
 }
